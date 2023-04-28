@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <style>
+    input {
+      margin-bottom: 10px;
+    }
+  </style>
+  <body>
+    <fieldset>
+      <legend>학생등록</legend>
+
+      <div>
+        <div>
+          <label for="stName">이름</label>
+          <input type="text" id="stName" value="" />
+        </div>
+        <div>
+          <label for="stAge">나이</label>
+          <input type="number" id="stAge" value="" />
+          <!-- <button id="del">삭제</button> -->
+        </div>
+        <div>
+          <label for="stNum">번호</label>
+          <input
+            type="number"
+            id="stNum"
+            value=""
+            placeholder="'-' 없이 입력하세요"
+          />
+        </div>
+        <div>
+          <button id="register">등록</button>
+          <button id="removeAge">삭제</button>
+        </div>
+      </div>
+      <div id="list"></div>
+    </fieldset>
+    <script>
+      let age = document.querySelector("#stAge");
+      let button = document.querySelector("#register");
+      let button2 = document.querySelector("#removeAge");
+      let name = document.querySelector("#stName");
+      let students = [];
+      let list = document.querySelector("#list");
+      let num = document.querySelector("#stNum");
+      let enter = document.querySelector("input");
+
+      // 엔터 -> keydown
+      enter.addEventListener("keydown", function (event) {
+        if (event.keyCode === 13) {
+          age.focus();
+        }
+      });
+      stAge.addEventListener("keydown", function (event) {
+        if (event.keyCode === 13) {
+          num.focus();
+        }
+      });
+      // 버튼 아래에 값 표시
+      button.onclick = function () {
+        let student = makeStudent(name.value, age.value, num.value);
+
+        students.push(student);
+
+        showList();
+      };
+
+      function makeStudent(name, age, num) {
+        return {
+          name,
+          age,
+          num,
+        };
+      }
+      //이름,나이,번호 list 보이기
+      function showList() {
+        list.innerHTML = "";
+        for (let student in students) {
+          list.insertAdjacentHTML(
+            "beforeend",
+            `<div>${students[student].name}/${students[student].age}/${students[student].num}</div>`
+          );
+          console.log(students[student]);
+        }
+      }
+      //이름,나이,번호 중 나이 삭제 list 보이기
+      function showList2() {
+        list.innerHTML = "";
+        for (let student in students) {
+          list.insertAdjacentHTML(
+            "beforeend",
+            `<div>${students[student].name}/${students[student].num}</div>`
+          );
+          students.splice(student, 1);
+        }
+      }
+
+      //삭제버튼만들기, 나이 삭제
+      //   function removeBtn() {
+      //     let button = document.createElement("button");
+      //     let type = document.createElement("type");
+      //     button.type = "button";
+      //     button.innerHTML = "삭제";
+      //     button.id = "remove_Age";
+
+      //     let fieldset = document.querySelector("fieldset");
+      //     fieldset.appendChild(button);
+      //   }
+
+      removeAge.onclick = function () {
+        let student = makeStudent(name.value, age.value, num.value);
+        students.push(student);
+        showList2();
+      };
+    </script>
+  </body>
+</html>
