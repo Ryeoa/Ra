@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <style>
+    input {
+      margin-bottom: 10px;
+    }
+  </style>
+  <body>
+    <fieldset>
+      <legend>학생등록</legend>
+
+      <div>
+        <div>
+          <label for="stName">이름</label>
+          <input type="text" id="stName" value="" />
+        </div>
+        <div>
+          <label for="stAge">나이</label>
+          <input type="number" id="stAge" value="" />
+        </div>
+        <div>
+          <label for="stNum">번호</label>
+          <input
+            type="number"
+            id="stNum"
+            value=""
+            placeholder="'-' 없이 입력하세요"
+          />
+        </div>
+        <div>
+          <button id="register">등록</button>
+        </div>
+      </div>
+      <div id="list"></div>
+    </fieldset>
+    <script>
+      let age = document.querySelector("#stAge");
+      let button = document.querySelector("#register");
+      let name = document.querySelector("#stName");
+      let students = [];
+      let list = document.querySelector("#list");
+      let num = document.querySelector("#stNum");
+      let enters = document.querySelectorAll("input");
+
+      //엔터->keydown
+      for (let enter of enters) {
+        enter.addEventListener("keydown", function (e) {
+          if (e.keyCode == 13) {
+            let nextEl =
+              this.parentElement.nextElementSibling.querySelector("input");
+            if (nextEl) {
+              nextEl.focus();
+            } else {
+              clearInput();
+            }
+          }
+        });
+      }
+
+      function clearInput() {
+        up();
+        for (let enter of enters) {
+          enter.value = "";
+        }
+        enters[0].focus();
+      }
+
+      button.onclick = function () {
+        up();
+      };
+
+      function up() {
+        let student = makeStudent(name.value, age.value, num.value);
+
+        students.push(student);
+
+        showList();
+      }
+
+      function makeStudent(name, age, num) {
+        return {
+          name,
+          age,
+          num,
+        };
+      }
+      //list
+      function showList() {
+        list.innerHTML = "";
+        for (let student in students) {
+          list.insertAdjacentHTML(
+            "beforeend",
+            `<div>${students[student].name}/${students[student].age}/${students[student].num} <button onclick="deleteAge(${student})">삭제</button></div>`
+          );
+        }
+      }
+      function deleteAge(index) {
+        students[index].age = "";
+        showList();
+      }
+    </script>
+  </body>
+</html>
